@@ -3,9 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "watch": {
+    "start": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "js",
+      "quiet": false
+    }
+  },
   "scripts": {
     "start": "node src/app/start",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "npm-watch"
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
@@ -27,6 +37,7 @@
     "babel-eslint": "^10.0.1",
     "babel-plugin-root-import": "^6.1.0",
     "eslint": "^5.16.0",
+    "npm-watch": "^0.6.0",
     "rimraf": "^2.6.3"
   },
   "author": "",
