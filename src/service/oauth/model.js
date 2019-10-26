@@ -14,40 +14,42 @@ const saveToken = (token, client, user) => {
     } = token;
     const {
         fullname,
-        email,
+        role,
     } = user;
     token.accessToken = jwt.sign({
         user: {
             fullname,
+            role,
         },
         accessTokenExpiresAt,
     }, process.env.SECRET);
     token.client = client;
     token.user = {
         fullname,
+        role,
     };
 
     return token;
 };
 
-const getRefreshToken = async (refreshToken) => {
+// const getRefreshToken = async (refreshToken) => {
 
-    const user = {
-        fullname: 'Poppy',
-    };
-    if (!user) {
-        return null;
-    }
+//     const user = {
+//         fullname: 'Poppy',
+//     };
+//     if (!user) {
+//         return null;
+//     }
 
-    return {
-        refreshToken,
-        client: {
-            clientId: 'ooda',
-            clientSecret: 'secret',
-        },
-        user: user.dataValues,
-    }
-};
+//     return {
+//         refreshToken,
+//         client: {
+//             clientId: 'ooda',
+//             clientSecret: 'secret',
+//         },
+//         user,
+//     }
+// };
 const revokeToken = (token) => {
 
     // this can be where we store the blacklist
@@ -59,6 +61,14 @@ const getUser = async (username, password) => {
     if (username === 'poppy' && password === 'hammer') {
         return {
             fullname: 'Poppy',
+            role: 'staff',
+        }
+    }
+
+    if (username === 'lulu' && password == 'pix') {
+        return {
+            fullname: 'Lulu',
+            role: 'hr',
         }
     }
     return null;
@@ -77,7 +87,7 @@ const getClient = (clientId, clientSecret) => {
 
 export default {
     getAccessToken,
-    getRefreshToken,
+    // getRefreshToken,
     getClient,
     getUser,
     saveToken,

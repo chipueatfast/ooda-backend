@@ -3,6 +3,7 @@ import bodyParser from 'body-parser';
 import {Request, Response} from 'oauth2-server';
 import { PingRouter } from './route/index';
 import oauth from '~/service/oauth/index';
+import { decodeAccessToken } from '~/util/encryption';
 
 const app = Express();
 const port = process.env.PORT;
@@ -28,6 +29,10 @@ const AuthenticateRequest = (req, res, next) => {
     if (req.path.split('/')[1] !== 'protected') {
         return next();
     }
+    if (!req.headers.authorization) {
+        return res.sendStatus(401);
+    }
+    decodeAccessToken(req.headers.authorization);
     const request = new Request(req);
     const response = new Response(res);
     app.oauth.authenticate(request, response)
@@ -35,7 +40,7 @@ const AuthenticateRequest = (req, res, next) => {
         .catch(function (err) { res.status(err.code || 500).json(err) })
 };
 
-app.use(AuthenticateRequest);
+// app.use(AuthenticateRequest);
 
 // provide token
 app.all('/oauth/token', (req, res) => {
@@ -49,7 +54,7 @@ app.all('/oauth/token', (req, res) => {
             res.status(err.code || 500).json(err);
         })
 });
-app.use('/ping', PingRouter);
+app.use('/protected/ping', PingRouter);
 
 app.listen(port, () => {
     console.log(`Server running at port ${port}`);
