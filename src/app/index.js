@@ -4,6 +4,7 @@ import {Request, Response} from 'oauth2-server';
 import { PingRouter } from './route/index';
 import oauth from '~/service/oauth/index';
 import { decodeAccessToken } from '~/util/encryption';
+import { CORSPolicyGuard } from '~/service/guard';
 
 const app = Express();
 const port = process.env.PORT;
@@ -41,6 +42,7 @@ const AuthenticateRequest = (req, res, next) => {
 };
 
 // app.use(AuthenticateRequest);
+app.use(CORSPolicyGuard);
 
 // provide token
 app.all('/oauth/token', (req, res) => {
