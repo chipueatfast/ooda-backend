@@ -3,7 +3,6 @@ import bodyParser from 'body-parser';
 import {Request, Response} from 'oauth2-server';
 import { PingRouter } from './route/index';
 import oauth from '~/service/oauth/index';
-import { decodeAccessToken } from '~/util/encryption';
 import { CORSPolicyGuard } from '~/service/guard';
 
 const app = Express();
@@ -25,23 +24,6 @@ app.use(function(req, res, next) {
 
 app.oauth = oauth;
 
-// autheticate request with oauth
-const AuthenticateRequest = (req, res, next) => {
-    if (req.path.split('/')[1] !== 'protected') {
-        return next();
-    }
-    if (!req.headers.authorization) {
-        return res.sendStatus(401);
-    }
-    decodeAccessToken(req.headers.authorization);
-    const request = new Request(req);
-    const response = new Response(res);
-    app.oauth.authenticate(request, response)
-        .then(() => next())
-        .catch(function (err) { res.status(err.code || 500).json(err) })
-};
-
-// app.use(AuthenticateRequest);
 app.use(CORSPolicyGuard);
 
 // provide token
