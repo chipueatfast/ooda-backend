@@ -13,9 +13,10 @@
     }
   },
   "scripts": {
-    "start": "node src/app/start",
+    "start": "yarn kill | node src/app/start",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "npm-watch"
+    "watch": "npm-watch",
+    "kill": "sudo kill $(lsof -t -i:2109)"
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",

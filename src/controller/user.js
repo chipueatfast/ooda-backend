@@ -1,10 +1,14 @@
 import { createSingleRowAsync, getRowBySingleValueAsync } from '~/util/database';
-
+import { generatePasswordHash } from '~/util/encryption';
 
 const createUser = async (req, res) => {
+    const passwordHash = generatePasswordHash(req.body.password);
     const newUser = await createSingleRowAsync(
         'User',
-        req.body,
+        {
+            ...req.body,
+            passwordHash,
+        },
         {
             email: req.body.email,
         }

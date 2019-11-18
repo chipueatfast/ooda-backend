@@ -8,3 +8,8 @@ export const decodeAccessToken = (authorization) => {
     const decoded = decodeToken(trimmed);
     return decoded;
 }
+
+export function generatePasswordHash(password) {
+    const saltRounds = 10;
+    return bcrypt.hashSync(password, saltRounds);
+}

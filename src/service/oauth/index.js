@@ -3,6 +3,6 @@ import model from './model';
 
 export default new OAuth2Server({
     model,
-    accessTokenLifetime: 60 * 3,
+    accessTokenLifetime: 6000 * 3,
     allowBearerTokensInQueryString: true,
 });

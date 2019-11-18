@@ -20,7 +20,6 @@ const User = () => sequelize().define('user', {
     },
     managerId: {
         type: Sequelize.NUMBER,
-        allowNull: false,
     },
 
 })

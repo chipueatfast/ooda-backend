@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
+import { getPasswordHash, getUserCredential } from '~/util/authentication';
+import { getRowBySingleValueAsync, } from '~/util/database';
+
 export const getAccessToken = (accessToken) => {
     const verifiedToken = jwt.verify(accessToken, process.env.SECRET);
     verifiedToken.accessTokenExpiresAt = new Date(verifiedToken.accessTokenExpiresAt);
@@ -9,7 +12,6 @@ export const getAccessToken = (accessToken) => {
 
 const saveToken = (token, client, user) => {
     const {
-        refreshToken,
         accessTokenExpiresAt,
     } = token;
     const {
@@ -32,25 +34,7 @@ const saveToken = (token, client, user) => {
     return token;
 };
 
-// const getRefreshToken = async (refreshToken) => {
-
-//     const user = {
-//         fullname: 'Poppy',
-//     };
-//     if (!user) {
-//         return null;
-//     }
-
-//     return {
-//         refreshToken,
-//         client: {
-//             clientId: 'ooda',
-//             clientSecret: 'secret',
-//         },
-//         user,
-//     }
-// };
-const revokeToken = (token) => {
+const revokeToken = () => {
 
     // this can be where we store the blacklist
     return true;
@@ -58,20 +42,27 @@ const revokeToken = (token) => {
 
 const getUser = async (username, password) => {
 
-    if (username === 'poppy' && password === 'hammer') {
-        return {
-            fullname: 'Poppy',
-            role: 'staff',
-        }
+    const passwordHash = await getPasswordHash(username);
+    if (bcrypt.compareSync(password, passwordHash)) {
+        return await getUserCredential(username);
     }
 
-    if (username === 'lulu' && password == 'pix') {
-        return {
-            fullname: 'Lulu',
-            role: 'hr',
-        }
-    }
     return null;
+
+    // if (username === 'poppy' && password === 'hammer') {
+    //     return {
+    //         fullname: 'Poppy',
+    //         role: 'staff',
+    //     }
+    // }
+
+    // if (username === 'lulu' && password == 'pix') {
+    //     return {
+    //         fullname: 'Lulu',
+    //         role: 'hr',
+    //     }
+    // }
+    // return null;
 };
 
 const getClient = (clientId, clientSecret) => {
@@ -87,7 +78,6 @@ const getClient = (clientId, clientSecret) => {
 
 export default {
     getAccessToken,
-    // getRefreshToken,
     getClient,
     getUser,
     saveToken,
