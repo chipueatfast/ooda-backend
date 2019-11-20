@@ -15,19 +15,22 @@ const saveToken = (token, client, user) => {
         accessTokenExpiresAt,
     } = token;
     const {
-        fullname,
+        username,
         role,
+        id,
     } = user;
     token.accessToken = jwt.sign({
         user: {
-            fullname,
+            id,
+            username,
             role,
         },
         accessTokenExpiresAt,
     }, process.env.SECRET);
     token.client = client;
     token.user = {
-        fullname,
+        id,
+        username,
         role,
     };
 

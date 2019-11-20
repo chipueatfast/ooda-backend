@@ -10,7 +10,7 @@ const LeaveRequest = () => sequelize().define('leave_request', {
         type: Sequelize.ENUM('pending', 'rejected', 'approved'),
         allowNull: false,
     },
-    number_of_days: {
+    numberOfDays: {
         type: Sequelize.NUMBER,
         allowNull: false,
     },

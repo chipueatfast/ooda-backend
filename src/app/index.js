@@ -1,10 +1,11 @@
 import Express from 'express';
 import bodyParser from 'body-parser';
 import {Request, Response} from 'oauth2-server';
-import { PingRouter, UserRouter } from './route/index';
-import oauth from '~/service/oauth/index';
+import { PingRouter, UserRouter, LeaveRequestRouter } from './route/index';
 import { CORSPolicyGuard } from '~/service/guard';
 import { initTables } from '~/db/index';
+
+import oauth from '~/service/oauth';
 
 const app = Express();
 const port = process.env.PORT;
@@ -25,15 +26,13 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.oauth = oauth;
-
 app.use(CORSPolicyGuard);
 
 // provide token
 app.all('/oauth/token', (req, res) => {
     const request = new Request(req);
     const response = new Response(res);
-    return app.oauth.token(request, response)
+    return oauth.token(request, response)
         .then(function (token) {
             res.json(token);
         })
@@ -43,6 +42,7 @@ app.all('/oauth/token', (req, res) => {
 });
 app.use('/protected/ping', PingRouter);
 app.use('/user',UserRouter);
+app.use('/leaveRequest', LeaveRequestRouter);
 
 app.listen(port, () => {
     console.log(`Server running at port ${port}`);

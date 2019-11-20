@@ -9,6 +9,12 @@ export const getRowBySingleValueAsync = (tableName, prop, value) => {
 
 };
 
+export const getSingleRowAsync = (tableName, filter) => {
+    return tables()[tableName].findOne({
+        where: filter,
+    })
+}
+
 export const createSingleRowAsync = async (tableName, rowData, duplicateCondition) => {
     if (!!duplicateCondition && await tables()[tableName].findOne({
         where: duplicateCondition,
