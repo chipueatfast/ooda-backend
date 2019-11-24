@@ -18,6 +18,14 @@ const LeaveRequest = () => sequelize().define('leave_request', {
         type: Sequelize.STRING,
         allowNull: false,
     },
+    fromDate: {
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
+    toDate: {
+        type: Sequelize.DATE,
+        allowNull: false,
+    },
 })
 
 export default LeaveRequest;

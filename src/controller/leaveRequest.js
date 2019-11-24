@@ -33,6 +33,8 @@ const createLeaveRequest = async (req, res) => {
     const {
         numberOfDays,
         reason,
+        fromDate,
+        toDate,
     } = req.body;
     const {
         userId: submitterId,
@@ -53,6 +55,8 @@ const createLeaveRequest = async (req, res) => {
         numberOfDays,
         reason,
         status: 'PENDING',
+        fromDate,
+        toDate,
     });
 
     if (!newLeaveBalanceRequest.error) {
