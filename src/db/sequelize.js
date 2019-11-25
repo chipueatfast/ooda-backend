@@ -6,6 +6,10 @@ export function initSequelize() {
     sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, '', {
         host: 'localhost',
         dialect: 'mariadb',
+        dialectOptions: {
+            dateStrings: true,
+            useUTC: false,
+        },
     });
     sequelize.authenticate()
         .then(() => {

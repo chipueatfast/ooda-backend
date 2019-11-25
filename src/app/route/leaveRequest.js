@@ -9,7 +9,7 @@ LeaveRequestRouter
     .use('/', OauthMiddlewareGuard)
 
     .use('/employee/:userId/', IdGuardMiddlewareGuard('userId'))
-    .get('/employee/:userId/', LeaveRequestController.getLeaveRequestByUserId)
+    .get('/employee/:userId/', LeaveRequestController.getLeaveBalance)
     .post('/employee/:userId/', LeaveRequestController.createLeaveRequest)
 
     .use('/manager/:managerId/', IdGuardMiddlewareGuard('managerId'))

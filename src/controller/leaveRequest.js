@@ -39,7 +39,11 @@ const createLeaveRequest = async (req, res) => {
     const {
         userId: submitterId,
     } = req.params;
-    if (!(submitterId && numberOfDays && reason)) {
+    if (!(submitterId 
+        && numberOfDays 
+        && reason 
+        && fromDate 
+        && toDate)) {
         return res.status(400).send();
     }
     if (! await isLeaveRequestValid({
@@ -55,8 +59,8 @@ const createLeaveRequest = async (req, res) => {
         numberOfDays,
         reason,
         status: 'PENDING',
-        fromDate,
-        toDate,
+        fromDate: fromDate,
+        toDate: toDate,
     });
 
     if (!newLeaveBalanceRequest.error) {
@@ -75,7 +79,7 @@ const getLeaveRequestByManager = async (req, res) => {
     } = req.params;
 
     const leaveRequests = await sequelize().query(
-        'select lr.* from leave_requests lr ' +
+        'select lr.*, u.title from leave_requests lr ' +
         'join users u on u.id = lr.submitterId ' + 
         'where u.managerId = :managerId and status=\'PENDING\'',
         { replacements: { managerId }, type: Sequelize.QueryTypes.SELECT }
@@ -106,7 +110,25 @@ const getLeaveRequestByUserId = async (req, res) => {
     }).send()
 }
 
-const getLeaveBalance = () => {}
+const getLeaveBalance = async (req, res) => {
+    const {
+        userId,
+    } = req.params;
+    const leaveRequests = await tables().LeaveRequest.findAll({
+        where: {
+            submitterId: userId,
+        },
+    });
+    const remainingPaidLeave = await getRemainingAnnualLeave({
+        submitterId: userId,
+    });
+
+    return res.json({
+        leaveRequests,
+        remainingPaidLeave,
+    }).status(201).send();
+
+}
 const updateLeaveRequest = async (req, res) => {
     const {
         leaveRequestId,

@@ -24,6 +24,9 @@ const User = () => sequelize().define('user', {
     department: {
         type: Sequelize.ENUM('it', 'hr'),
     },
+    title: {
+        type: Sequelize.STRING,
+    },
 
 })
 
