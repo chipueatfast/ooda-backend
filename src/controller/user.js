@@ -1,5 +1,6 @@
 import { createSingleRowAsync, getRowBySingleValueAsync } from '~/util/database';
 import { generatePasswordHash } from '~/util/encryption';
+import tables from '~/db/index';
 
 const createUser = async (req, res) => {
     const passwordHash = generatePasswordHash(req.body.password);
@@ -24,6 +25,20 @@ const createUser = async (req, res) => {
     }
 }
 
+const isManager = async (req, res) => {
+    const {
+        userId,
+    } = req.params;
+    const inferior = await tables().User.findOne({
+        where: {
+            managerId: userId,
+        },
+    });
+    return res.json({
+        isManager: !!inferior,
+    }).send();
+}
+
 const getUserById = async (req, res) => {
     const {
         id,
@@ -38,4 +53,5 @@ const getUserById = async (req, res) => {
 export default {
     createUser,
     getUserById,
+    isManager,
 };

@@ -7,7 +7,8 @@ const PerformanceReviewRouter = new Router();
 
 PerformanceReviewRouter
     .use('/', OauthMiddlewareGuard)
-    .use('/employee/:userId/', PerformanceReviewController.getPRHistory)
+    .get('/employee/:userId/', IdGuardMiddlewareGuard('userId'))
+    .get('/employee/:userId/', PerformanceReviewController.getPRHistory)
 
     .use('/manager/:managerId/', IdGuardMiddlewareGuard('managerId'))
     .get('/manager/:managerId/employee/', PerformanceReviewController.getPerformanceReviewableList)
@@ -16,5 +17,6 @@ PerformanceReviewRouter
     .patch('/manager/:managerId/', PerformanceReviewController.updatePerformanceReview)
 
     .use('/hr/', RoleBasedMiddlewareGuard(['hr']))
+    .get('/hr/', PerformanceReviewController.getToFinalize)
     .put('/hr/', PerformanceReviewController.finalizePR)
 export default PerformanceReviewRouter;
