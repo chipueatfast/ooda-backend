@@ -10,6 +10,9 @@ const User = () => sequelize().define('user', {
         type: Sequelize.STRING,
         allowNull: false,
     },
+    phoneNumber: {
+        type: Sequelize.STRING,
+    },
     role: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -24,10 +27,24 @@ const User = () => sequelize().define('user', {
     department: {
         type: Sequelize.ENUM('it', 'hr'),
     },
+    joinDate: {
+        type: Sequelize.DATE,
+    },
     title: {
         type: Sequelize.STRING,
     },
-
+    address: {
+        type: Sequelize.STRING,
+    },
+    dob: {
+        type: Sequelize.DATE,
+    },
+    bankAccount: {
+        type: Sequelize.STRING,
+    },
+    idCard: {
+        type: Sequelize.STRING,
+    },
 })
 
 export default User;
