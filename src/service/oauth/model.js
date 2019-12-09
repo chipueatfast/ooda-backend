@@ -2,7 +2,6 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 import { getPasswordHash, getUserCredential } from '~/util/authentication';
-import { getRowBySingleValueAsync, } from '~/util/database';
 
 export const getAccessToken = (accessToken) => {
     const verifiedToken = jwt.verify(accessToken, process.env.SECRET);
@@ -18,6 +17,7 @@ const saveToken = (token, client, user) => {
         username,
         role,
         id,
+        department,
     } = user;
     token.accessToken = jwt.sign({
         user: {
@@ -32,6 +32,7 @@ const saveToken = (token, client, user) => {
         id,
         username,
         role,
+        department,
     };
 
     return token;
