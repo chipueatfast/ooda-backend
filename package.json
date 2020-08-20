@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "bcrypt": "^3.0.4",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.18.3",
     "crypto": "^1.0.1",
     "dotenv": "^6.2.0",
